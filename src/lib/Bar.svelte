@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from "svelte";
+
     export let title = Mandag;
     
     export let startTime = "2022-06-21T20:00:00";
@@ -11,14 +13,27 @@
     
     let currentTime = Date.now();
 
+    onMount(() => {
+        const interval = setInterval(() => {
+            currentTime = Date.now();
+        }, 1000);
+
+        return () => {
+            clearInterval(interval);
+        }
+    });
+
     endTimeMillis = endTimeMillis - startTimeMillis;
-    currentTime = currentTime - startTimeMillis;
+    $: currentTimeDifference = currentTime - startTimeMillis;
 
     console.log(`Start time: ${startTimeMillis}`);
     console.log(`End time: ${endTimeMillis}`);
     console.log(`Current time: ${currentTime}`);
     
-    let barWidth = ( currentTime / endTimeMillis ) * 100;
+    const minWidth = 0;
+    const maxWidth = 100;
+    $: barWidth = Math.min(Math.max(( currentTimeDifference / endTimeMillis ) * 100, minWidth), maxWidth);
+
     console.log(`Bar width: ${barWidth}`);
 </script>
 
