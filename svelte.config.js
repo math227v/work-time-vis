@@ -8,9 +8,13 @@ const config = {
 			// default options are shown
 			pages: 'build',
 			assets: 'build',
-			fallback: null,
-			precompress: false
+			precompress: false,
+			trailingSlash: 'always'
 		}),
+		prerender: {
+			// This can be false if you're using a fallback (i.e. SPA mode)
+			default: true
+		},
 	},
 	preprocess: [
 		preprocess({
