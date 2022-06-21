@@ -18,7 +18,6 @@
     console.log(`End time: ${endTimeMillis}`);
     console.log(`Current time: ${currentTime}`);
     
-    // let barWidth = Math.floor( ( currentTime / endTimeMillis ) * 100 );
     let barWidth = ( currentTime / endTimeMillis ) * 100;
     console.log(`Bar width: ${barWidth}`);
 </script>
