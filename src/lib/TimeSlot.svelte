@@ -31,9 +31,9 @@
     endTimeMillis = endTimeMillis - startTimeMillis;
     $: currentTimeDifference = currentTime - startTimeMillis;
 
-    console.log(`Start time: ${startTimeMillis}`);
-    console.log(`End time: ${endTimeMillis}`);
-    console.log(`Current time: ${currentTime}`);
+    // console.log(`Start time: ${startTimeMillis}`);
+    // console.log(`End time: ${endTimeMillis}`);
+    // console.log(`Current time: ${currentTime}`);
     
     const minWidth = 0;
     const maxWidth = 100;
@@ -45,12 +45,45 @@
     // Calculate Earned Money
     // 
 
-    $: hoursElapsed = limit(currentTimeDifference, 0, endTimeMillis) / 1000 / 60 / 60;
-    $: earnedMoney = Math.floor(hoursElapsed * hourRate);
+    $: elapsedTime = limit(currentTimeDifference, 0, endTimeMillis);
+    // $: elapsedHours = Math.floor( elapsedTime / 1000 / 60 / 60 );
+    // $: elapsedMinutes = Math.floor( elapsedTime / 1000 / 60 );
+    // $: elapsedSeconds = Math.floor( elapsedTime / 1000 );
+
+    const secondInMillis = 1000;
+    const minutesInMillis = secondInMillis * 60;
+    const hoursInMillis = minutesInMillis * 60;
+
+    $: elapsedHours = leadingZero( elapsedTime / hoursInMillis );
+    $: elapsedMinutes = leadingZero( elapsedTime % hoursInMillis / minutesInMillis );
+    $: elapsedSeconds = leadingZero( elapsedTime % minutesInMillis / secondInMillis );
+
+    let endingHours = leadingZero( endTimeMillis / hoursInMillis );
+    let endingMinutes = leadingZero( endTimeMillis % hoursInMillis / minutesInMillis );
+    let endingSeconds = leadingZero( endTimeMillis % minutesInMillis / secondInMillis );
+
+    $: earnedMoney = formatNumberToMoney(elapsedTime / hoursInMillis * hourRate);
 
     function limit(value, min, max) {
         return Math.min(Math.max(value, min), max);
     }
+
+    function formatNumberToMoney(number) {
+        number = number * 100;
+        number = Math.floor(number);
+        number = number / 100;
+        return Intl.NumberFormat('da-DK').format(number);
+    }
+
+    function leadingZero(number, length) {
+        number = Math.floor(number);
+        return number.toString().padStart(2, '0');
+    }
+
+    // 
+    // Format Elapsed time
+    // 
+
 </script>
 
 <style>
@@ -59,10 +92,21 @@
     }
 </style>
 
-<div class="bg-gray-800 m-2 px-6 pt-0">
-    <h6 class="text-white">{title}</h6>
-    <div class="bg-white h-4">
-        <div class="bar bg-green-500 h-full" style="--bar-width: {barWidth}%"></div>
+<div class="bg-gray-800 my-4 h-16 flex flex-col relative">
+    
+    <!-- Padding div -->
+    <div class="absolute h-full w-full p-6">
+        <!-- Process bar -->
+        <div class="bg-white h-4">
+            <div class="bar bg-green-500 h-full" style="--bar-width: {barWidth}%"></div>
+        </div>
     </div>
-    <h6 class="text-white">Money earned so far: <span class="font-bold">{earnedMoney}</span> kr.</h6>
+
+    <!-- Text -->
+    <div class="absolute h-full w-full text-white font-bold">
+        <p class="absolute left-6 top-0">{title}</p>
+        <p class="absolute left-6 bottom-1 text-sm">Money earned so far: <span class="text-blue-200">{earnedMoney}</span> kr.</p>
+
+        <p class="absolute right-6 top-1 text-sm">{elapsedHours}:{elapsedMinutes}:{elapsedSeconds} / {endingHours}:{endingMinutes}:{endingSeconds} ({Math.floor(barWidth)})%</p>
+    </div>
 </div>
