@@ -107,6 +107,6 @@
         <p class="absolute left-6 top-0">{title}</p>
         <p class="absolute left-6 bottom-1 text-sm">Money earned so far: <span class="text-blue-200">{earnedMoney}</span> kr.</p>
 
-        <p class="absolute right-6 top-1 text-sm">{elapsedHours}:{elapsedMinutes}:{elapsedSeconds} / {endingHours}:{endingMinutes}:{endingSeconds} ({Math.floor(barWidth)})%</p>
+        <p class="absolute right-6 top-1 text-sm">{elapsedHours}:{elapsedMinutes}:{elapsedSeconds} / {endingHours}:{endingMinutes}:{endingSeconds} ({Math.floor(barWidth)}%)</p>
     </div>
 </div>
