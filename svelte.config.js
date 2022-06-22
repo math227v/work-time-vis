@@ -1,23 +1,25 @@
 import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 
+// import { dev } from '$app/env';
+
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
 		adapter: adapter({
 			// default options are shown
-			pages: 'build',
-			assets: 'build',
-			precompress: false,
-			trailingSlash: 'always'
+			pages: 'docs',
+			assets: 'docs',
 		}),
-		prerender: {
-			// This can be false if you're using a fallback (i.e. SPA mode)
-			default: true
-		},
+		// prerender: {
+		// 	// This can be false if you're using a fallback (i.e. SPA mode)
+		// 	default: true
+		// },
 		paths: {
-			base: '/work-time-vis'
-		}
+			// base: dev ? "" : '/work-time-vis',
+			base: '/work-time-vis',
+		},
+
 	},
 	preprocess: [
 		preprocess({
