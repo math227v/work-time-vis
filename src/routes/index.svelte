@@ -15,7 +15,4 @@ import TimeSlot from "$lib/TimeSlot.svelte";
     <TimeSlot title="Tirsdag Nat"    startTime="2022-06-28T21:45:00" endTime="2022-06-29T07:00:00" />
     <TimeSlot title="Onsdag Nat"     startTime="2022-06-29T21:45:00" endTime="2022-06-30T07:00:00" />
     <TimeSlot title="Torsdag Nat"    startTime="2022-06-30T21:45:00" endTime="2022-07-01T07:00:00" />
-    
-    <p>Penis</p>
-    <TimeSlot title="Test Nat"    startTime="2022-06-22T16:00:00" endTime="2022-06-22T17:00:00" />
 </div>

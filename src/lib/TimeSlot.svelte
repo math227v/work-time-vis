@@ -39,7 +39,7 @@
     const maxWidth = 100;
     $: barWidth = Math.min(Math.max(( currentTimeDifference / endTimeMillis ) * 100, minWidth), maxWidth);
 
-    console.log(`Bar width: ${barWidth}`);
+    // console.log(`Bar width: ${barWidth}`);
 
     //
     // Calculate Earned Money
@@ -95,7 +95,7 @@
 <div class="bg-gray-800 my-4 h-16 flex flex-col relative">
     
     <!-- Padding div -->
-    <div class="absolute h-full w-full p-6">
+    <div class="absolute h-full w-full px-4 py-6">
         <!-- Process bar -->
         <div class="bg-white h-4">
             <div class="bar bg-green-500 h-full" style="--bar-width: {barWidth}%"></div>
@@ -104,9 +104,9 @@
 
     <!-- Text -->
     <div class="absolute h-full w-full text-white font-bold">
-        <p class="absolute left-6 top-0">{title}</p>
-        <p class="absolute left-6 bottom-1 text-sm">Money earned so far: <span class="text-blue-200">{earnedMoney}</span> kr.</p>
+        <p class="absolute left-4 top-0">{title}</p>
+        <p class="absolute left-4 bottom-1 text-sm">Money earned so far: <span class="text-blue-200">{earnedMoney}</span> kr.</p>
 
-        <p class="absolute right-6 top-1 text-sm">{elapsedHours}:{elapsedMinutes}:{elapsedSeconds} / {endingHours}:{endingMinutes}:{endingSeconds} ({Math.floor(barWidth)}%)</p>
+        <p class="absolute right-4 top-1 text-sm">{elapsedHours}:{elapsedMinutes}:{elapsedSeconds} / {endingHours}:{endingMinutes}:{endingSeconds} ({Math.floor(barWidth)}%)</p>
     </div>
 </div>
