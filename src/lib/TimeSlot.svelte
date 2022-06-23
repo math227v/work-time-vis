@@ -37,6 +37,8 @@
     
     const minWidth = 0;
     const maxWidth = 100;
+
+    export let barWidth = 0;
     $: barWidth = Math.min(Math.max(( currentTimeDifference / endTimeMillis ) * 100, minWidth), maxWidth);
 
     // console.log(`Bar width: ${barWidth}`);
@@ -81,8 +83,14 @@
     }
 
     // 
-    // Format Elapsed time
+    // Format Elapsed Percentage
     // 
+
+    $: elapsedPercentage = barWidth.toLocaleString('da-DK', {
+        style: 'currency',
+        currency: 'DKK',
+        minimumFractionDigits: 2
+    });
 
 </script>
 
