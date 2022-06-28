@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
 
     export let title = Mandag;
-    export let hourRate = 118 * 0.92;
+    export let hourRate = 73 + 5 + 40;
     
     //
     // Calculate Bar Width
@@ -64,16 +64,21 @@
     let endingMinutes = leadingZero( endTimeMillis % hoursInMillis / minutesInMillis );
     let endingSeconds = leadingZero( endTimeMillis % minutesInMillis / secondInMillis );
 
-    $: earnedMoney = formatNumberToMoney(elapsedTime / hoursInMillis * hourRate);
+    const hoursOfBreak = 0.5; // Number of hours of break pr night
+    $: earnedMoney = formatNumberToMoney((( elapsedTime / hoursInMillis ) - hoursOfBreak) * hourRate);
 
     function limit(value, min, max) {
         return Math.min(Math.max(value, min), max);
     }
 
     function formatNumberToMoney(number) {
-        number = number * 100;
-        number = Math.floor(number);
-        number = number / 100;
+        number = number - 16.6;         // Remove ATP+-Bidrag
+        number = number * 0.92;         // Remove AM-Bidrag
+        
+        number = number * 100;          //
+        number = Math.floor(number);    // Reduce to 2 decimal
+        number = number / 100;          //
+        
         return Intl.NumberFormat('da-DK').format(number);
     }
 
