@@ -1,22 +1,20 @@
 <script>
     import { onMount } from "svelte";
 
-    export let title = Mandag;
-    export let hourRate = 73 + 5 + 40;
+    let { barWidth = $bindable(0), ...rest } = $props();
+
+    export const {
+        title = 'Mandag',
+        hourRate = 73 + 5 + 40,
+        startTime = '2022-06-21T20:00:00',
+        endTime = '2022-06-21T20:30:00'
+    } = rest;
     
     //
     // Calculate Bar Width
     //
 
-    export let startTime = "2022-06-21T20:00:00";
-    startTime = new Date(startTime);
-    let startTimeMillis = startTime.getTime();
-    
-    export let endTime = "2022-06-21T20:30:00";
-    endTime = new Date(endTime);
-    let endTimeMillis = endTime.getTime();
-    
-    let currentTime = Date.now();
+    let currentTime = $state(Date.now());
 
     onMount(() => {
         const interval = setInterval(() => {
@@ -25,11 +23,15 @@
 
         return () => {
             clearInterval(interval);
-        }
+        };
     });
 
-    endTimeMillis = endTimeMillis - startTimeMillis;
-    $: currentTimeDifference = currentTime - startTimeMillis;
+    const startTimeMillis = $derived(() => new Date(startTime).getTime());
+    const endTimeMillis = $derived(
+        () => new Date(endTime).getTime() - startTimeMillis
+    );
+
+    const currentTimeDifference = $derived(() => currentTime - startTimeMillis);
 
     // console.log(`Start time: ${startTimeMillis}`);
     // console.log(`End time: ${endTimeMillis}`);
@@ -38,8 +40,12 @@
     const minWidth = 0;
     const maxWidth = 100;
 
-    export let barWidth = 0;
-    $: barWidth = Math.min(Math.max(( currentTimeDifference / endTimeMillis ) * 100, minWidth), maxWidth);
+    $effect(() => {
+        barWidth = Math.min(
+            Math.max((currentTimeDifference / endTimeMillis) * 100, minWidth),
+            maxWidth
+        );
+    });
 
     // console.log(`Bar width: ${barWidth}`);
 
@@ -47,7 +53,9 @@
     // Calculate Earned Money
     // 
 
-    $: elapsedTime = limit(currentTimeDifference, 0, endTimeMillis);
+    const elapsedTime = $derived(() =>
+        limit(currentTimeDifference, 0, endTimeMillis)
+    );
     // $: elapsedHours = Math.floor( elapsedTime / 1000 / 60 / 60 );
     // $: elapsedMinutes = Math.floor( elapsedTime / 1000 / 60 );
     // $: elapsedSeconds = Math.floor( elapsedTime / 1000 );
@@ -56,16 +64,32 @@
     const minutesInMillis = secondInMillis * 60;
     const hoursInMillis = minutesInMillis * 60;
 
-    $: elapsedHours = leadingZero( elapsedTime / hoursInMillis );
-    $: elapsedMinutes = leadingZero( elapsedTime % hoursInMillis / minutesInMillis );
-    $: elapsedSeconds = leadingZero( elapsedTime % minutesInMillis / secondInMillis );
+    const elapsedHours = $derived(() =>
+        leadingZero(elapsedTime / hoursInMillis)
+    );
+    const elapsedMinutes = $derived(() =>
+        leadingZero((elapsedTime % hoursInMillis) / minutesInMillis)
+    );
+    const elapsedSeconds = $derived(() =>
+        leadingZero((elapsedTime % minutesInMillis) / secondInMillis)
+    );
 
-    let endingHours = leadingZero( endTimeMillis / hoursInMillis );
-    let endingMinutes = leadingZero( endTimeMillis % hoursInMillis / minutesInMillis );
-    let endingSeconds = leadingZero( endTimeMillis % minutesInMillis / secondInMillis );
+    const endingHours = $derived(() =>
+        leadingZero(endTimeMillis / hoursInMillis)
+    );
+    const endingMinutes = $derived(() =>
+        leadingZero((endTimeMillis % hoursInMillis) / minutesInMillis)
+    );
+    const endingSeconds = $derived(() =>
+        leadingZero((endTimeMillis % minutesInMillis) / secondInMillis)
+    );
 
     const hoursOfBreak = 0.5; // Number of hours of break pr night
-    $: earnedMoney = formatNumberToMoney((( elapsedTime / hoursInMillis ) - hoursOfBreak) * hourRate);
+    const earnedMoney = $derived(() =>
+        formatNumberToMoney(
+            ((elapsedTime / hoursInMillis) - hoursOfBreak) * hourRate
+        )
+    );
 
     function limit(value, min, max) {
         return Math.min(Math.max(value, min), max);
@@ -91,11 +115,13 @@
     // Format Elapsed Percentage
     // 
 
-    $: elapsedPercentage = barWidth.toLocaleString('da-DK', {
-        style: 'currency',
-        currency: 'DKK',
-        minimumFractionDigits: 2
-    });
+    const elapsedPercentage = $derived(() =>
+        barWidth.toLocaleString('da-DK', {
+            style: 'currency',
+            currency: 'DKK',
+            minimumFractionDigits: 2
+        })
+    );
 
 </script>
 
