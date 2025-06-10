@@ -11,10 +11,9 @@ const config = {
 			pages: 'docs',
 			assets: 'docs',
 		}),
-		prerender: {
-			// This can be false if you're using a fallback (i.e. SPA mode)
-			default: true
-		},
+                prerender: {
+                        entries: ['*']
+                },
 		paths: {
 			// base: dev ? "" : '/work-time-vis',
 			base: '/work-time-vis',

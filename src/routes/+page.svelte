@@ -1,14 +1,22 @@
 <script>
     import TimeSlot from "$lib/TimeSlot.svelte";
-    let barWidths = [0];   
 
-    $: totalPercentage = barWidths.reduce((accumulator, current) => accumulator + current); // Sum all results
-    $: averagePercentage = totalPercentage / barWidths.length;
-    $: formattedAverage = averagePercentage.toLocaleString('da-DK', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
+    const barWidths = $state([0]);
 
+    const totalPercentage = $derived(() =>
+        barWidths.reduce((accumulator, current) => accumulator + current)
+    );
+
+    const averagePercentage = $derived(
+        () => totalPercentage / barWidths.length
+    );
+
+    const formattedAverage = $derived(() =>
+        averagePercentage.toLocaleString('da-DK', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        })
+    );
 </script>
 
 <div class="p-6">
