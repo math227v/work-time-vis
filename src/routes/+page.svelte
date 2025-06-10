@@ -1,7 +1,7 @@
 <script>
     import TimeSlot from "$lib/TimeSlot.svelte";
 
-    const barWidths = $state([0]);
+    const barWidths = $state(Array(9).fill(0));
 
     const totalPercentage = $derived(() =>
         barWidths.reduce((accumulator, current) => accumulator + current)
