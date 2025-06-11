@@ -1,29 +1,38 @@
-# Work Time Vis v2
+# create-svelte
 
-This project is a fresh start built with [SvelteKit](https://kit.svelte.dev). It will use Tailwind CSS, Flowbite for UI components and Vitest for testing. The app lets you configure your hourly wage and working hours for each weekday.
+Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
 
-## Getting Started
+## Creating a project
 
-Install dependencies and start developing:
+If you're seeing this, you've probably already done this step. Congrats!
 
 ```bash
-npm install
+# create a new project in the current directory
+npm init svelte
+
+# create a new project in my-app
+npm init svelte my-app
+```
+
+## Developing
+
+Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+
+```bash
 npm run dev
+
+# or start the server and open the app in a new browser tab
+npm run dev -- --open
 ```
 
-Run tests with:
+## Building
+
+To create a production version of your app:
 
 ```bash
-npx vitest
+npm run build
 ```
 
-## Container Usage
+You can preview the production build with `npm run preview`.
 
-You can build and run the project in a Docker container:
-
-```bash
-docker build -t work-time-vis .
-docker run -p 4173:4173 work-time-vis
-```
-
-The container runs `npm run preview` to serve the production build.
+> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
